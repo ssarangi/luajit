@@ -1874,11 +1874,12 @@ static void parse_body(LexState *ls, ExpDesc *e, int needself, BCLine line)
   fscope_begin(&fs, &bl, 0);
   fs.linedefined = line;
   fs.numparams = (uint8_t)parse_params(ls, needself);
+  lj_lex_next(ls);  /* Skip ':' */
   fs.bcbase = pfs->bcbase + pfs->pc;
   fs.bclim = pfs->bclim - pfs->pc;
   bcemit_AD(&fs, BC_FUNCF, 0, 0);  /* Placeholder. */
   parse_chunk(ls);
-  if (ls->token != TK_end) lex_match(ls, TK_end, TK_function, line);
+  // if (ls->token != TK_end) lex_match(ls, TK_end, TK_function, line);
   pt = fs_finish(ls, (ls->lastline = ls->linenumber));
   pfs->bcbase = ls->bcstack + oldbase;  /* May have been reallocated. */
   pfs->bclim = (BCPos)(ls->sizebcstack - oldbase);
@@ -2300,7 +2301,7 @@ static void parse_func(LexState *ls, BCLine line)
   FuncState *fs;
   ExpDesc v, b;
   int needself = 0;
-  lj_lex_next(ls);  /* Skip 'function'. */
+  lj_lex_next(ls);  /* Skip 'def'. */
   /* Parse function name. */
   var_lookup(ls, &v);
   while (ls->token == '.')  /* Multiple dot-separated fields. */
@@ -2666,6 +2667,7 @@ static int parse_stmt(LexState *ls)
     parse_repeat(ls, line);
     break;
   case TK_function:
+  case TK_def:
     parse_func(ls, line);
     break;
   case TK_local:

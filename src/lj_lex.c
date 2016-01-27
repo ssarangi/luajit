@@ -264,19 +264,21 @@ static int llex(LexState *ls, TValue *tv)
     if (lj_char_isident(ls->current)) {
       GCstr *s;
       if (lj_char_isdigit(ls->current)) {  /* Numeric literal. */
-	lex_number(ls, tv);
-	return TK_number;
+        lex_number(ls, tv);
+        return TK_number;
       }
       /* Identifier or reserved word. */
       do {
-	save_and_next(ls);
+        save_and_next(ls);
       } while (lj_char_isident(ls->current));
+
       s = lj_parse_keepstr(ls, ls->sb.buf, ls->sb.n);
       setstrV(ls->L, tv, s);
       if (s->reserved > 0)  /* Reserved word? */
-	return TK_OFS + s->reserved;
+          return TK_OFS + s->reserved;
       return TK_name;
     }
+
     switch (ls->current) {
     case '\n':
     case '\r':
