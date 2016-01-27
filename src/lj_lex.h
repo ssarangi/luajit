@@ -20,7 +20,7 @@
   __(label, ::) __(number, <number>) __(name, <name>) __(string, <string>) \
   __(eof, <eof>)
 
-enum {
+enum TOKENS {
   TK_OFS = 256,
 #define TKENUM1(name)		TK_##name,
 #define TKENUM2(name, sym)	TK_##name,
