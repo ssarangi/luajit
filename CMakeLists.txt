@@ -303,7 +303,46 @@ set ( LJCORE_C
   ${LJLIB_C}
 )
 
-add_library ( liblua SHARED ${LJCORE_C} ${DEPS} )
+set ( LJCORE_H
+  src/lj_gc.h
+  src/lj_err.h
+  src/lj_char.h
+  src/lj_bc.h
+  src/lj_obj.h
+  src/lj_str.h
+  src/lj_tab.h
+  src/lj_func.h
+  src/lj_udata.h
+  src/lj_meta.h
+  src/lj_debug.h
+  src/lj_state.h
+  src/lj_dispatch.h
+  src/lj_vmevent.h
+  src/lj_strscan.h
+  src/lj_lex.h
+  src/lj_parse.h
+  src/lj_ir.h
+  src/lj_mcode.h
+  src/lj_snap.h
+  src/lj_record.h
+  src/lj_crecord.h
+  src/lj_ffrecord.h
+  src/lj_asm.h
+  src/lj_trace.h
+  src/lj_gdbjit.h
+  src/lj_ctype.h
+  src/lj_cdata.h
+  src/lj_cconv.h
+  src/lj_ccall.h
+  src/lj_ccallback.h
+  src/lj_carith.h
+  src/lj_clib.h
+  src/lj_cparse.h
+  src/lj_lib.h
+  src/lj_alloc.h
+)
+
+add_library ( liblua SHARED ${LJCORE_C} ${LJCORE_H} ${DEPS} )
 target_link_libraries ( liblua ${LIBS} )
 set_target_properties ( liblua PROPERTIES OUTPUT_NAME lua CLEAN_DIRECT_OUTPUT 1 )
 

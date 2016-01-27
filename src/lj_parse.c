@@ -1894,7 +1894,7 @@ static void parse_body(LexState *ls, ExpDesc *e, int needself, BCLine line)
       pfs->flags |= PROTO_FIXUP_RETURN;
     pfs->flags |= PROTO_CHILD;
   }
-  lj_lex_next(ls);
+  // lj_lex_next(ls);
 }
 
 /* Parse expression list. Last expression is left open. */
