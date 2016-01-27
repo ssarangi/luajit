@@ -33,9 +33,9 @@ LJ_FUNCA GCstr * LJ_FASTCALL lj_str_fromnumber(lua_State *L, cTValue *o);
 LJ_FUNC const char *lj_str_pushvf(lua_State *L, const char *fmt, va_list argp);
 LJ_FUNC const char *lj_str_pushf(lua_State *L, const char *fmt, ...)
 #if defined(__GNUC__)
-  __attribute__ ((format (printf, 2, 3)))
+__attribute__((format(printf, 2, 3)))
 #endif
-  ;
+;
 
 /* Resizable string buffers. Struct definition in lj_obj.h. */
 LJ_FUNC char *lj_str_needbuf(lua_State *L, SBuf *sb, MSize sz);

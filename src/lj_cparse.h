@@ -30,32 +30,32 @@ typedef int CPToken;	/* C parser token. */
 
 /* C parser internal value representation. */
 typedef struct CPValue {
-  union {
-    int32_t i32;	/* Value for CTID_INT32. */
-    uint32_t u32;	/* Value for CTID_UINT32. */
-  };
-  CTypeID id;		/* C Type ID of the value. */
+    union {
+        int32_t i32;	/* Value for CTID_INT32. */
+        uint32_t u32;	/* Value for CTID_UINT32. */
+    };
+    CTypeID id;		/* C Type ID of the value. */
 } CPValue;
 
 /* C parser state. */
 typedef struct CPState {
-  CPChar c;		/* Current character. */
-  CPToken tok;		/* Current token. */
-  CPValue val;		/* Token value. */
-  GCstr *str;		/* Interned string of identifier/keyword. */
-  CType *ct;		/* C type table entry. */
-  const char *p;	/* Current position in input buffer. */
-  SBuf sb;		/* String buffer for tokens. */
-  lua_State *L;		/* Lua state. */
-  CTState *cts;		/* C type state. */
-  TValue *param;	/* C type parameters. */
-  const char *srcname;	/* Current source name. */
-  BCLine linenumber;	/* Input line counter. */
-  int depth;		/* Recursive declaration depth. */
-  uint32_t tmask;	/* Type mask for next identifier. */
-  uint32_t mode;	/* C parser mode. */
-  uint8_t packstack[CPARSE_MAX_PACKSTACK];  /* Stack for pack pragmas. */
-  uint8_t curpack;	/* Current position in pack pragma stack. */
+    CPChar c;		/* Current character. */
+    CPToken tok;		/* Current token. */
+    CPValue val;		/* Token value. */
+    GCstr *str;		/* Interned string of identifier/keyword. */
+    CType *ct;		/* C type table entry. */
+    const char *p;	/* Current position in input buffer. */
+    SBuf sb;		/* String buffer for tokens. */
+    lua_State *L;		/* Lua state. */
+    CTState *cts;		/* C type state. */
+    TValue *param;	/* C type parameters. */
+    const char *srcname;	/* Current source name. */
+    BCLine linenumber;	/* Input line counter. */
+    int depth;		/* Recursive declaration depth. */
+    uint32_t tmask;	/* Type mask for next identifier. */
+    uint32_t mode;	/* C parser mode. */
+    uint8_t packstack[CPARSE_MAX_PACKSTACK];  /* Stack for pack pragmas. */
+    uint8_t curpack;	/* Current position in pack pragma stack. */
 } CPState;
 
 LJ_FUNC int lj_cparse(CPState *cp);

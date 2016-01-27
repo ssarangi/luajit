@@ -15,8 +15,8 @@
 
 /* C library namespace. */
 typedef struct CLibrary {
-  void *handle;		/* Opaque handle for dynamic library loader. */
-  GCtab *cache;		/* Cache for resolved symbols. Anchored in ud->env. */
+    void *handle;		/* Opaque handle for dynamic library loader. */
+    GCtab *cache;		/* Cache for resolved symbols. Anchored in ud->env. */
 } CLibrary;
 
 LJ_FUNC TValue *lj_clib_index(lua_State *L, CLibrary *cl, GCstr *name);

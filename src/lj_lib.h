@@ -62,13 +62,13 @@ LJ_FUNC int lj_lib_checkopt(lua_State *L, int narg, int def, const char *lst);
 
 /* Push internal function on the stack. */
 static LJ_AINLINE void lj_lib_pushcc(lua_State *L, lua_CFunction f,
-				     int id, int n)
+    int id, int n)
 {
-  GCfunc *fn;
-  lua_pushcclosure(L, f, n);
-  fn = funcV(L->top-1);
-  fn->c.ffid = (uint8_t)id;
-  setmref(fn->c.pc, &G(L)->bc_cfunc_int);
+    GCfunc *fn;
+    lua_pushcclosure(L, f, n);
+    fn = funcV(L->top - 1);
+    fn->c.ffid = (uint8_t)id;
+    setmref(fn->c.pc, &G(L)->bc_cfunc_int);
 }
 
 #define lj_lib_pushcf(L, fn, id)	(lj_lib_pushcc(L, (fn), (id), 0))
@@ -87,7 +87,7 @@ static LJ_AINLINE void lj_lib_pushcc(lua_State *L, lua_CFunction f,
   lj_lib_register(L, regname, lj_lib_init_##name, lj_lib_cf_##name)
 
 LJ_FUNC void lj_lib_register(lua_State *L, const char *libname,
-			     const uint8_t *init, const lua_CFunction *cf);
+    const uint8_t *init, const lua_CFunction *cf);
 
 /* Library init data tags. */
 #define LIBINIT_LENMASK	0x3f

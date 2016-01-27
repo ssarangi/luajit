@@ -16,7 +16,7 @@
 typedef enum {
 #define TREDEF(name, msg)	LJ_TRERR_##name,
 #include "lj_traceerr.h"
-  LJ_TRERR__MAX
+    LJ_TRERR__MAX
 } TraceError;
 
 LJ_FUNC_NORET void lj_trace_err(jit_State *J, TraceError e);

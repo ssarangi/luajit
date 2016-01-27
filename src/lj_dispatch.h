@@ -41,9 +41,9 @@
 
 enum {
 #define GOTENUM(name) LJ_GOT_##name,
-GOTDEF(GOTENUM)
+    GOTDEF(GOTENUM)
 #undef GOTENUM
-  LJ_GOT__MAX
+    LJ_GOT__MAX
 };
 #endif
 
@@ -68,17 +68,17 @@ typedef uint16_t HotCount;
 
 /* Global state, main thread and extra fields are allocated together. */
 typedef struct GG_State {
-  lua_State L;				/* Main thread. */
-  global_State g;			/* Global state. */
+    lua_State L;				/* Main thread. */
+    global_State g;			/* Global state. */
 #if LJ_TARGET_MIPS
-  ASMFunction got[LJ_GOT__MAX];		/* Global offset table. */
+    ASMFunction got[LJ_GOT__MAX];		/* Global offset table. */
 #endif
 #if LJ_HASJIT
-  jit_State J;				/* JIT state. */
-  HotCount hotcount[HOTCOUNT_SIZE];	/* Hot counters. */
+    jit_State J;				/* JIT state. */
+    HotCount hotcount[HOTCOUNT_SIZE];	/* Hot counters. */
 #endif
-  ASMFunction dispatch[GG_LEN_DISP];	/* Instruction dispatch tables. */
-  BCIns bcff[GG_NUM_ASMFF];		/* Bytecode for ASM fast functions. */
+    ASMFunction dispatch[GG_LEN_DISP];	/* Instruction dispatch tables. */
+    BCIns bcff[GG_NUM_ASMFF];		/* Bytecode for ASM fast functions. */
 } GG_State;
 
 #define GG_OFS(field)	((int)offsetof(GG_State, field))

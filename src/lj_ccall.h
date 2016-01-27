@@ -39,12 +39,12 @@
 #define CCALL_ALIGN_CALLSTATE	16
 
 typedef LJ_ALIGN(16) union FPRArg {
-  double d[2];
-  float f[4];
-  uint8_t b[16];
-  uint16_t s[8];
-  int i[4];
-  int64_t l[2];
+    double d[2];
+    float f[4];
+    uint8_t b[16];
+    uint16_t s[8];
+    int i[4];
+    int64_t l[2];
 } FPRArg;
 
 typedef intptr_t GPRArg;
@@ -64,8 +64,8 @@ typedef intptr_t GPRArg;
 
 typedef intptr_t GPRArg;
 typedef union FPRArg {
-  double d;
-  float f[2];
+    double d;
+    float f[2];
 } FPRArg;
 
 #elif LJ_TARGET_PPC
@@ -101,8 +101,8 @@ typedef intptr_t GPRArg;
 
 typedef intptr_t GPRArg;
 typedef union FPRArg {
-  double d;
-  struct { LJ_ENDIAN_LOHI(float f; , float g;) };
+    double d;
+    struct { LJ_ENDIAN_LOHI(float f;, float g;) };
 } FPRArg;
 
 #else
@@ -136,26 +136,26 @@ LJ_STATIC_ASSERT(CCALL_NUM_FPR <= CCALL_MAX_FPR);
 /* -- C call state -------------------------------------------------------- */
 
 typedef LJ_ALIGN(CCALL_ALIGN_CALLSTATE) struct CCallState {
-  void (*func)(void);		/* Pointer to called function. */
-  uint32_t spadj;		/* Stack pointer adjustment. */
-  uint8_t nsp;			/* Number of stack slots. */
-  uint8_t retref;		/* Return value by reference. */
+    void(*func)(void);		/* Pointer to called function. */
+    uint32_t spadj;		/* Stack pointer adjustment. */
+    uint8_t nsp;			/* Number of stack slots. */
+    uint8_t retref;		/* Return value by reference. */
 #if LJ_TARGET_X64
-  uint8_t ngpr;			/* Number of arguments in GPRs. */
-  uint8_t nfpr;			/* Number of arguments in FPRs. */
+    uint8_t ngpr;			/* Number of arguments in GPRs. */
+    uint8_t nfpr;			/* Number of arguments in FPRs. */
 #elif LJ_TARGET_X86
-  uint8_t resx87;		/* Result on x87 stack: 1:float, 2:double. */
+    uint8_t resx87;		/* Result on x87 stack: 1:float, 2:double. */
 #elif LJ_TARGET_PPC
-  uint8_t nfpr;			/* Number of arguments in FPRs. */
+    uint8_t nfpr;			/* Number of arguments in FPRs. */
 #endif
 #if LJ_32
-  int32_t align1;
+    int32_t align1;
 #endif
 #if CCALL_NUM_FPR
-  FPRArg fpr[CCALL_NUM_FPR];	/* Arguments/results in FPRs. */
+    FPRArg fpr[CCALL_NUM_FPR];	/* Arguments/results in FPRs. */
 #endif
-  GPRArg gpr[CCALL_NUM_GPR];	/* Arguments/results in GPRs. */
-  GPRArg stack[CCALL_MAXSTACK];	/* Stack slots. */
+    GPRArg gpr[CCALL_NUM_GPR];	/* Arguments/results in GPRs. */
+    GPRArg stack[CCALL_MAXSTACK];	/* Stack slots. */
 } CCallState;
 
 /* -- C call handling ----------------------------------------------------- */

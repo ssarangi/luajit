@@ -21,58 +21,58 @@
   __(eof, <eof>)
 
 enum TOKENS {
-  TK_OFS = 256,
+    TK_OFS = 256,
 #define TKENUM1(name)		TK_##name,
 #define TKENUM2(name, sym)	TK_##name,
-TKDEF(TKENUM1, TKENUM2)
+    TKDEF(TKENUM1, TKENUM2)
 #undef TKENUM1
 #undef TKENUM2
-  TK_RESERVED = TK_while - TK_OFS
+    TK_RESERVED = TK_while - TK_OFS
 };
 
 typedef int LexToken;
 
 /* Combined bytecode ins/line. Only used during bytecode generation. */
 typedef struct BCInsLine {
-  BCIns ins;		/* Bytecode instruction. */
-  BCLine line;		/* Line number for this bytecode. */
+    BCIns ins;		/* Bytecode instruction. */
+    BCLine line;		/* Line number for this bytecode. */
 } BCInsLine;
 
 /* Info for local variables. Only used during bytecode generation. */
 typedef struct VarInfo {
-  GCRef name;		/* Local variable name or goto/label name. */
-  BCPos startpc;	/* First point where the local variable is active. */
-  BCPos endpc;		/* First point where the local variable is dead. */
-  uint8_t slot;		/* Variable slot. */
-  uint8_t info;		/* Variable/goto/label info. */
+    GCRef name;		/* Local variable name or goto/label name. */
+    BCPos startpc;	/* First point where the local variable is active. */
+    BCPos endpc;		/* First point where the local variable is dead. */
+    uint8_t slot;		/* Variable slot. */
+    uint8_t info;		/* Variable/goto/label info. */
 } VarInfo;
 
 /* Lua lexer state. */
 typedef struct LexState {
-  struct FuncState *fs;	/* Current FuncState. Defined in lj_parse.c. */
-  struct lua_State *L;	/* Lua state. */
-  TValue tokenval;	/* Current token value. */
-  TValue lookaheadval;	/* Lookahead token value. */
-  int current;		/* Current character (charint). */
-  LexToken token;	/* Current token. */
-  LexToken lookahead;	/* Lookahead token. */
-  MSize n;		/* Bytes left in input buffer. */
-  const char *p;	/* Current position in input buffer. */
-  SBuf sb;		/* String buffer for tokens. */
-  lua_Reader rfunc;	/* Reader callback. */
-  void *rdata;		/* Reader callback data. */
-  BCLine linenumber;	/* Input line counter. */
-  BCLine lastline;	/* Line of last token. */
-  GCstr *chunkname;	/* Current chunk name (interned string). */
-  const char *chunkarg;	/* Chunk name argument. */
-  const char *mode;	/* Allow loading bytecode (b) and/or source text (t). */
-  VarInfo *vstack;	/* Stack for names and extents of local variables. */
-  MSize sizevstack;	/* Size of variable stack. */
-  MSize vtop;		/* Top of variable stack. */
-  BCInsLine *bcstack;	/* Stack for bytecode instructions/line numbers. */
-  MSize sizebcstack;	/* Size of bytecode stack. */
-  uint32_t level;	/* Syntactical nesting level. */
-  uint32_t current_indent; /* Indentation level for detecting block ends */
+    struct FuncState *fs;	/* Current FuncState. Defined in lj_parse.c. */
+    struct lua_State *L;	/* Lua state. */
+    TValue tokenval;	/* Current token value. */
+    TValue lookaheadval;	/* Lookahead token value. */
+    int current;		/* Current character (charint). */
+    LexToken token;	/* Current token. */
+    LexToken lookahead;	/* Lookahead token. */
+    MSize n;		/* Bytes left in input buffer. */
+    const char *p;	/* Current position in input buffer. */
+    SBuf sb;		/* String buffer for tokens. */
+    lua_Reader rfunc;	/* Reader callback. */
+    void *rdata;		/* Reader callback data. */
+    BCLine linenumber;	/* Input line counter. */
+    BCLine lastline;	/* Line of last token. */
+    GCstr *chunkname;	/* Current chunk name (interned string). */
+    const char *chunkarg;	/* Chunk name argument. */
+    const char *mode;	/* Allow loading bytecode (b) and/or source text (t). */
+    VarInfo *vstack;	/* Stack for names and extents of local variables. */
+    MSize sizevstack;	/* Size of variable stack. */
+    MSize vtop;		/* Top of variable stack. */
+    BCInsLine *bcstack;	/* Stack for bytecode instructions/line numbers. */
+    MSize sizebcstack;	/* Size of bytecode stack. */
+    uint32_t level;	/* Syntactical nesting level. */
+    uint32_t current_indent; /* Indentation level for detecting block ends */
 } LexState;
 
 LJ_FUNC int lj_lex_setup(lua_State *L, LexState *ls);

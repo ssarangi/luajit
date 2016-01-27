@@ -10,7 +10,7 @@
 
 /* Garbage collector states. Order matters. */
 enum {
-  GCSpause, GCSpropagate, GCSatomic, GCSsweepstring, GCSsweep, GCSfinalize
+    GCSpause, GCSpropagate, GCSatomic, GCSsweepstring, GCSsweep, GCSfinalize
 };
 
 /* Bitmasks for marked field of GCobj. */
@@ -80,12 +80,12 @@ LJ_FUNC void lj_gc_barriertrace(global_State *g, uint32_t traceno);
 /* Move the GC propagation frontier back for tables (make it gray again). */
 static LJ_AINLINE void lj_gc_barrierback(global_State *g, GCtab *t)
 {
-  GCobj *o = obj2gco(t);
-  lua_assert(isblack(o) && !isdead(g, o));
-  lua_assert(g->gc.state != GCSfinalize && g->gc.state != GCSpause);
-  black2gray(o);
-  setgcrefr(t->gclist, g->gc.grayagain);
-  setgcref(g->gc.grayagain, o);
+    GCobj *o = obj2gco(t);
+    lua_assert(isblack(o) && !isdead(g, o));
+    lua_assert(g->gc.state != GCSfinalize && g->gc.state != GCSpause);
+    black2gray(o);
+    setgcrefr(t->gclist, g->gc.grayagain);
+    setgcref(g->gc.grayagain, o);
 }
 
 /* Barrier for stores to table objects. TValue and GCobj variant. */
@@ -110,14 +110,14 @@ static LJ_AINLINE void lj_gc_barrierback(global_State *g, GCtab *t)
 LJ_FUNC void *lj_mem_realloc(lua_State *L, void *p, MSize osz, MSize nsz);
 LJ_FUNC void * LJ_FASTCALL lj_mem_newgco(lua_State *L, MSize size);
 LJ_FUNC void *lj_mem_grow(lua_State *L, void *p,
-			  MSize *szp, MSize lim, MSize esz);
+    MSize *szp, MSize lim, MSize esz);
 
 #define lj_mem_new(L, s)	lj_mem_realloc(L, NULL, 0, (s))
 
 static LJ_AINLINE void lj_mem_free(global_State *g, void *p, size_t osize)
 {
-  g->gc.total -= (MSize)osize;
-  g->allocf(g->allocd, p, osize, 0);
+    g->gc.total -= (MSize)osize;
+    g->allocf(g->allocd, p, osize, 0);
 }
 
 #define lj_mem_newvec(L, n, t)	((t *)lj_mem_new(L, (MSize)((n)*sizeof(t))))
