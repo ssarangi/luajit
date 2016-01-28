@@ -263,6 +263,7 @@ static void read_string(LexState *ls, int delim, TValue *tv)
 
 static int llex(LexState *ls, TValue *tv)
 {
+    int col = 0;
     lj_str_resetbuf(&ls->sb);
     for (;;) {
         if (lj_char_isident(ls->current)) {
@@ -289,6 +290,9 @@ static int llex(LexState *ls, TValue *tv)
             inclinenumber(ls);
             continue;
         case ' ':
+            col += 1;
+            next(ls);
+            continue;
         case '\t':
         case '\v':
         case '\f':
@@ -391,7 +395,7 @@ int lj_lex_setup(lua_State *L, LexState *ls)
     ls->lookahead = TK_eof;  /* No look-ahead token. */
     ls->linenumber = 1;
     ls->lastline = 1;
-    ls->current_indent = 0;
+    ls->indent = 0;
     lj_str_resizebuf(ls->L, &ls->sb, LJ_MIN_SBUF);
     next(ls);  /* Read-ahead first char. */
     if (ls->current == 0xef && ls->n >= 2 && char2int(ls->p[0]) == 0xbb &&
