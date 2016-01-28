@@ -294,6 +294,9 @@ static int llex(LexState *ls, TValue *tv)
             next(ls);
             continue;
         case '\t':
+            col += 4;
+            next(ls);
+            continue;
         case '\v':
         case '\f':
             next(ls);
