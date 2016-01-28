@@ -263,10 +263,21 @@ static void read_string(LexState *ls, int delim, TValue *tv)
 
 static int llex(LexState *ls, TValue *tv)
 {
-    int col = 0;
+    uint32_t col = 0;
     lj_str_resetbuf(&ls->sb);
     for (;;) {
         if (lj_char_isident(ls->current)) {
+            // Have we hit an indent. Could be 0 indent too.
+            if (col > ls->indstack[ls->indent])
+            {
+                ls->indstack[ls->indent++] = col;
+            }
+            else if (col < ls->indstack[ls->indent])
+            {
+                ls->indstack[ls->indent--] = 0;
+                return TK_end;
+            }
+
             GCstr *s;
             if (lj_char_isdigit(ls->current)) {  /* Numeric literal. */
                 lex_number(ls, tv);
@@ -399,6 +410,10 @@ int lj_lex_setup(lua_State *L, LexState *ls)
     ls->linenumber = 1;
     ls->lastline = 1;
     ls->indent = 0;
+
+    for (int i = 0; i < MAX_INDENT; ++i)
+        ls->indstack[i] = 0;
+
     lj_str_resizebuf(ls->L, &ls->sb, LJ_MIN_SBUF);
     next(ls);  /* Read-ahead first char. */
     if (ls->current == 0xef && ls->n >= 2 && char2int(ls->p[0]) == 0xbb &&
