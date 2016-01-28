@@ -76,6 +76,7 @@ typedef struct LexState {
     uint32_t level;	/* Syntactical nesting level. */
     uint32_t indent; /* Indentation level for detecting block ends */
     uint32_t indstack[MAX_INDENT]; /* Indentation Stack */
+    uint32_t ident_found;
 } LexState;
 
 LJ_FUNC int lj_lex_setup(lua_State *L, LexState *ls);

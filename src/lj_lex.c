@@ -270,13 +270,15 @@ static int llex(LexState *ls, TValue *tv)
             // Have we hit an indent. Could be 0 indent too.
             if (col > ls->indstack[ls->indent])
             {
-                ls->indstack[ls->indent++] = col;
+                ls->indstack[++ls->indent] = col;
             }
             else if (col < ls->indstack[ls->indent])
             {
                 ls->indstack[ls->indent--] = 0;
                 return TK_end;
             }
+
+            ls->ident_found = 1;
 
             GCstr *s;
             if (lj_char_isdigit(ls->current)) {  /* Numeric literal. */
@@ -299,9 +301,11 @@ static int llex(LexState *ls, TValue *tv)
         case '\n':
         case '\r':
             inclinenumber(ls);
+            ls->ident_found = 0;
             continue;
         case ' ':
-            col += 1;
+            if (!ls->ident_found)
+                col += 1;
             next(ls);
             continue;
         case '\t':
@@ -410,6 +414,7 @@ int lj_lex_setup(lua_State *L, LexState *ls)
     ls->linenumber = 1;
     ls->lastline = 1;
     ls->indent = 0;
+    ls->ident_found = 0;
 
     for (int i = 0; i < MAX_INDENT; ++i)
         ls->indstack[i] = 0;
