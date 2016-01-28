@@ -75,7 +75,7 @@ typedef struct LexState {
     MSize sizebcstack;	/* Size of bytecode stack. */
     uint32_t level;	/* Syntactical nesting level. */
     uint32_t indent; /* Indentation level for detecting block ends */
-    uint32_t indstack[MAXINDENT]; /* Indentation Stack */
+    uint32_t indstack[MAX_INDENT]; /* Indentation Stack */
 } LexState;
 
 LJ_FUNC int lj_lex_setup(lua_State *L, LexState *ls);
