@@ -128,9 +128,6 @@ GCstr *lj_str_new(lua_State *L, const char *str, size_t lenx)
     if (LJ_LIKELY((((uintptr_t)str + len - 1) & (LJ_PAGESIZE - 1)) <= LJ_PAGESIZE - 4)) {
         while (o != NULL) {
             GCstr *sx = gco2str(o);
-#if _DEBUG
-            sx->str = str;
-#endif
             if (sx->len == len && str_fastcmp(str, strdata(sx), len) == 0) {
                 /* Resurrect if dead. Can only happen with fixstring() (keywords). */
                 if (isdead(g, o)) flipwhite(o);
@@ -166,9 +163,6 @@ GCstr *lj_str_new(lua_State *L, const char *str, size_t lenx)
     setgcref(g->strhash[h], obj2gco(s));
     if (g->strnum++ > g->strmask)  /* Allow a 100% load factor. */
         lj_str_resize(L, (g->strmask << 1) + 1);  /* Grow string table. */
-#if _DEBUG
-    s->str = str;
-#endif
     return s;  /* Return newly interned string. */
 }
 

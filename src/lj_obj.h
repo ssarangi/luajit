@@ -227,9 +227,6 @@ typedef struct GCstr {
     uint8_t unused;
     MSize hash;		/* Hash of string. */
     MSize len;		/* Size of string. */
-#if _DEBUG
-    char *str;
-#endif
 } GCstr;
 
 #define strref(r)	(&gcref((r))->str)
