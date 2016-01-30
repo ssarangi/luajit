@@ -77,6 +77,7 @@ typedef struct LexState {
     uint32_t col;    /* Current column where lexer is at */
     uint32_t indent; /* Indentation level for detecting block ends */
     uint32_t indstack[MAX_INDENT]; /* Indentation Stack */
+    uint32_t indent_col;  /* Current indentation column */
     uint32_t ident_found;
 } LexState;
 

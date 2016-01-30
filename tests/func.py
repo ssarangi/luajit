@@ -1,8 +1,9 @@
 def foo():
     print("hello world")
-    a = 1
+    a = 3
     b = 2
     c = a * b
     return c
 
-foo()
+g = foo()
+print(g)
