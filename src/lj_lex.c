@@ -37,12 +37,13 @@ TKDEF(TKSTR1, TKSTR2)
 
 /* -- Buffer handling ----------------------------------------------------- */
 
-#define char2int(c)		((int)(uint8_t)(c))
-#define next(ls) \
-  (ls->current = (ls->n--) > 0 ? char2int(*ls->p++) : fillbuf(ls))
-#define save_and_next(ls)	(save(ls, ls->current), next(ls))
-#define currIsNewline(ls)	(ls->current == '\n' || ls->current == '\r')
-#define END_OF_STREAM		(-1)
+#define char2int(c)         ((int)(uint8_t)(c))
+//#define next(ls) \
+//  (ls->current = (ls->n--) > 0 ? char2int(*ls->p++) : fillbuf(ls))
+
+#define save_and_next(ls)   (save(ls, ls->current), next(ls))
+#define currIsNewline(ls)   (ls->current == '\n' || ls->current == '\r')
+#define END_OF_STREAM       (-1)
 
 static int fillbuf(LexState *ls)
 {
@@ -52,6 +53,12 @@ static int fillbuf(LexState *ls)
     ls->n = (MSize)sz - 1;
     ls->p = buf;
     return char2int(*(ls->p++));
+}
+
+int next(LexState *ls) {
+    // ++ls->col;
+    (ls->current = (ls->n--) > 0 ? char2int(*ls->p++) : fillbuf(ls));
+    return ls->current;
 }
 
 static LJ_NOINLINE void save_grow(LexState *ls, int c)
@@ -263,16 +270,15 @@ static void read_string(LexState *ls, int delim, TValue *tv)
 
 static int llex(LexState *ls, TValue *tv)
 {
-    uint32_t col = 0;
     lj_str_resetbuf(&ls->sb);
     for (;;) {
         if (lj_char_isident(ls->current)) {
             // Have we hit an indent. Could be 0 indent too.
-            if (col > ls->indstack[ls->indent])
+            if (!ls->ident_found && ls->col > ls->indstack[ls->indent])
             {
-                ls->indstack[++ls->indent] = col;
+                ls->indstack[++ls->indent] = ls->col;
             }
-            else if (col < ls->indstack[ls->indent])
+            else if (ls->col < ls->indstack[ls->indent])
             {
                 ls->indstack[ls->indent--] = 0;
                 return TK_end;
@@ -300,16 +306,17 @@ static int llex(LexState *ls, TValue *tv)
         switch (ls->current) {
         case '\n':
         case '\r':
+            ls->col = 0;
             inclinenumber(ls);
             ls->ident_found = 0;
             continue;
         case ' ':
             if (!ls->ident_found)
-                col += 1;
+                ls->col += 1;
             next(ls);
             continue;
         case '\t':
-            col += 4;
+            ls->col += 4;
             next(ls);
             continue;
         case '\v':
@@ -413,6 +420,7 @@ int lj_lex_setup(lua_State *L, LexState *ls)
     ls->lookahead = TK_eof;  /* No look-ahead token. */
     ls->linenumber = 1;
     ls->lastline = 1;
+    ls->col = 0;
     ls->indent = 0;
     ls->ident_found = 0;
 

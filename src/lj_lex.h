@@ -74,6 +74,7 @@ typedef struct LexState {
     BCInsLine *bcstack;	/* Stack for bytecode instructions/line numbers. */
     MSize sizebcstack;	/* Size of bytecode stack. */
     uint32_t level;	/* Syntactical nesting level. */
+    uint32_t col;    /* Current column where lexer is at */
     uint32_t indent; /* Indentation level for detecting block ends */
     uint32_t indstack[MAX_INDENT]; /* Indentation Stack */
     uint32_t ident_found;
