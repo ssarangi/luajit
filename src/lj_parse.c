@@ -2413,7 +2413,7 @@ static void parse_func(LexState *ls, BCLine line)
 static int endofblock(LexToken token)
 {
     switch (token) {
-    case TK_else: case TK_elseif: case TK_end: case TK_until: case TK_eof:
+    case TK_else: case TK_elif: case TK_end: case TK_until: case TK_eof:
         return 1;
     default:
         return 0;
@@ -2726,7 +2726,7 @@ static void parse_if(LexState *ls, BCLine line)
     BCPos flist;
     BCPos escapelist = NO_JMP;
     flist = parse_then(ls);
-    while (ls->token == TK_elseif) {  /* Parse multiple 'elseif' blocks. */
+    while (ls->token == TK_elif) {  /* Parse multiple 'elseif' blocks. */
         jmp_append(fs, &escapelist, bcemit_jmp(fs));
         jmp_tohere(fs, flist);
         flist = parse_then(ls);

@@ -13,7 +13,7 @@
 
 /* Lua lexer tokens. */
 #define TKDEF(_, __) \
-  _(and) _(break) _(do) _(else) _(elseif) _(end) _(false) \
+  _(and) _(break) _(do) _(else) _(elif) _(end) _(false) \
   _(for) _(def) _(function) _(goto) _(if) _(in) _(local) _(nil) _(not) _(or) \
   _(repeat) _(return) _(then) _(true) _(until) _(while) \
   __(concat, ..) __(dots, ...) __(eq, ==) __(ge, >=) __(le, <=) __(ne, ~=) \
