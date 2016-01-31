@@ -2742,7 +2742,8 @@ static void parse_if(LexState *ls, BCLine line)
         jmp_append(fs, &escapelist, flist);
     }
     jmp_tohere(fs, escapelist);
-    lex_match(ls, TK_end, TK_if, line);
+    // No need to match the end. We are doing it with indentation
+    // lex_match(ls, TK_end, TK_if, line);
 }
 
 /* -- Parse statements ---------------------------------------------------- */
