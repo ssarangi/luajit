@@ -2538,11 +2538,13 @@ static void parse_while(LexState *ls, BCLine line)
     start = fs->lasttarget = fs->pc;
     condexit = expr_cond(ls);
     fscope_begin(fs, &bl, FSCOPE_LOOP);
-    lex_check(ls, TK_do);
+    // lex_check(ls, TK_do);
+    lex_check(ls, ':');
     loop = bcemit_AD(fs, BC_LOOP, fs->nactvar, 0);
     parse_block(ls);
     jmp_patch(fs, bcemit_jmp(fs), start);
-    lex_match(ls, TK_end, TK_while, line);
+    // Do not match the end since indentation will already send TK_end
+    // lex_match(ls, TK_end, TK_while, line);
     fscope_end(fs);
     jmp_tohere(fs, condexit);
     jmp_patchins(fs, loop, fs->pc);
