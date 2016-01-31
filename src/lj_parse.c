@@ -2061,13 +2061,13 @@ static void expr_primary(LexState *ls, ExpDesc *v)
             expr_bracket(ls, &key);
             expr_index(fs, v, &key);
         }
-        else if (ls->token == ':') {
-            ExpDesc key;
-            lj_lex_next(ls);
-            expr_str(ls, &key);
-            bcemit_method(fs, v, &key);
-            parse_args(ls, v);
-        }
+        //else if (ls->token == ':') {
+        //    ExpDesc key;
+        //    lj_lex_next(ls);
+        //    expr_str(ls, &key);
+        //    bcemit_method(fs, v, &key);
+        //    parse_args(ls, v);
+        //}
         else if (ls->token == '(' || ls->token == TK_string || ls->token == '{') {
             expr_tonextreg(fs, v);
             parse_args(ls, v);
@@ -2525,6 +2525,7 @@ static void parse_block(LexState *ls)
     fscope_begin(fs, &bl, 0);
     parse_chunk(ls);
     fscope_end(fs);
+    lj_lex_next(ls);
 }
 
 /* Parse 'while' statement. */
@@ -2712,7 +2713,8 @@ static BCPos parse_then(LexState *ls)
     BCPos condexit;
     lj_lex_next(ls);  /* Skip 'if' or 'elseif'. */
     condexit = expr_cond(ls);
-    lex_check(ls, TK_then);
+    // lex_check(ls, TK_then);
+    lex_check(ls, ':');
     parse_block(ls);
     return condexit;
 }
@@ -2733,6 +2735,7 @@ static void parse_if(LexState *ls, BCLine line)
         jmp_append(fs, &escapelist, bcemit_jmp(fs));
         jmp_tohere(fs, flist);
         lj_lex_next(ls);  /* Skip 'else'. */
+        lj_lex_next(ls); /* Skip ':' */
         parse_block(ls);
     }
     else {
