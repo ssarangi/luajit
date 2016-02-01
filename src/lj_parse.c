@@ -1735,7 +1735,7 @@ static void expr_index(FuncState *fs, ExpDesc *t, ExpDesc *e)
         lua_Number n = expr_numberV(e);
         int32_t k = lj_num2int(n);
         if (checku8(k) && n == (lua_Number)k) {
-            t->u.s.aux = BCMAX_C + 1 + (uint32_t)k;  /* 256..511: const byte key */
+            t->u.s.aux = BCMAX_C + 2 + (uint32_t)k;  /* 256..511: const byte key */
             return;
         }
 #endif
