@@ -2670,15 +2670,16 @@ static void parse_for_iter(LexState *ls, GCstr *indexname)
     var_new_fixed(ls, nvars++, VARNAME_FOR_CTL);
     /* Visible variables returned from iterator. */
     var_new(ls, nvars++, indexname);
-    while (lex_opt(ls, ','))
-        var_new(ls, nvars++, lex_str(ls));
     lex_check(ls, TK_in);
+    //while (lex_opt(ls, ','))
+    //    var_new(ls, nvars++, lex_str(ls));
+    var_new(ls, nvars++, lex_str(ls));
+    lex_check(ls, ':');
     line = ls->linenumber;
     assign_adjust(ls, 3, expr_list(ls, &e), &e);
     bcreg_bump(fs, 3);  /* The iterator needs another 3 slots (func + 2 args). */
     isnext = (nvars <= 5 && predict_next(ls, fs, exprpc));
     var_add(ls, 3);  /* Hidden control variables. */
-    lex_check(ls, TK_do);
     loop = bcemit_AJ(fs, isnext ? BC_ISNEXT : BC_JMP, base, NO_JMP);
     fscope_begin(fs, &bl, 0);  /* Scope for visible variables. */
     var_add(ls, nvars - 3);
@@ -2703,14 +2704,14 @@ static void parse_for(LexState *ls, BCLine line)
     fscope_begin(fs, &bl, FSCOPE_LOOP);
     lj_lex_next(ls);  /* Skip 'for'. */
     varname = lex_str(ls);  /* Get first variable name. */
-    lex_check(ls, TK_in);
     if (ls->token == '=')
         parse_for_num(ls, varname, line);
     else if (ls->token == ',' || ls->token == TK_in)
         parse_for_iter(ls, varname);
     else
         err_syntax(ls, LJ_ERR_XFOR);
-    lex_match(ls, TK_end, TK_for, line);
+    /* Do not need to match end. We already get token TK_end from indentation */
+    // lex_match(ls, TK_end, TK_for, line);
     fscope_end(fs);  /* Resolve break list. */
 }
 
