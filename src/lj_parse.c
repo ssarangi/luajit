@@ -2699,6 +2699,7 @@ static void parse_for(LexState *ls, BCLine line)
     fscope_begin(fs, &bl, FSCOPE_LOOP);
     lj_lex_next(ls);  /* Skip 'for'. */
     varname = lex_str(ls);  /* Get first variable name. */
+    lex_check(ls, TK_in);
     if (ls->token == '=')
         parse_for_num(ls, varname, line);
     else if (ls->token == ',' || ls->token == TK_in)
