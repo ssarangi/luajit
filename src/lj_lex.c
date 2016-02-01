@@ -56,7 +56,7 @@ static int fillbuf(LexState *ls)
 }
 
 int next(LexState *ls) {
-    // ++ls->col;
+    ++ls->col;
     (ls->current = (ls->n--) > 0 ? char2int(*ls->p++) : fillbuf(ls));
     return ls->current;
 }
@@ -318,6 +318,8 @@ static int llex(LexState *ls, TValue *tv)
             continue;
         case '\t':
             ls->col += 4;
+            if (!ls->ident_found)
+                ls->indent_col += 4;
             next(ls);
             continue;
         case '\v':

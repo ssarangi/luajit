@@ -77,6 +77,9 @@ typedef struct ExpDesc {
 #define expr_numtv(e)		check_exp(expr_isnumk((e)), &(e)->u.nval)
 #define expr_numberV(e)		numberVnum(expr_numtv((e)))
 
+/* Forward Declarations */
+static inc_index_to_match_python(LexState *ls, ExpDesc *key);
+
 /* Initialize expression. */
 static LJ_AINLINE void expr_init(ExpDesc *e, ExpKind k, uint32_t info)
 {
@@ -1735,7 +1738,7 @@ static void expr_index(FuncState *fs, ExpDesc *t, ExpDesc *e)
         lua_Number n = expr_numberV(e);
         int32_t k = lj_num2int(n);
         if (checku8(k) && n == (lua_Number)k) {
-            t->u.s.aux = BCMAX_C + 2 + (uint32_t)k;  /* 256..511: const byte key */
+            t->u.s.aux = BCMAX_C + 1 + (uint32_t)k;  /* 256..511: const byte key */
             return;
         }
 #endif
@@ -2059,6 +2062,7 @@ static void expr_primary(LexState *ls, ExpDesc *v)
             ExpDesc key;
             expr_toanyreg(fs, v);
             expr_bracket(ls, &key);
+            inc_index_to_match_python(ls, &key);
             expr_index(fs, v, &key);
         }
         //else if (ls->token == ':') {
@@ -2859,3 +2863,15 @@ GCproto *lj_parse(LexState *ls)
     return pt;
 }
 
+/*                  Support for Python specific functions               */
+static inc_index_to_match_python(LexState *ls, ExpDesc *key)
+{
+    ExpDesc v2;
+    v2.k = VKNUM;
+    v2.u.nval.u64 = 1;
+    expr_init(&v2, VKNUM, 0);
+    TValue tv;
+    tv.n = 1;
+    copyTV(ls->L, &v2.u.nval, &tv);
+    bcemit_binop(ls->fs, OPR_ADD, key, &v2);
+}
