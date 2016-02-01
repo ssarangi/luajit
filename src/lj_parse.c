@@ -1800,8 +1800,8 @@ static void expr_table(LexState *ls, ExpDesc *e)
     expr_init(e, VNONRELOC, freg);
     bcreg_reserve(fs, 1);
     freg++;
-    lex_check(ls, '{');
-    while (ls->token != '}') {
+    lex_check(ls, '[');
+    while (ls->token != ']') {
         ExpDesc key, val;
         vcall = 0;
         if (ls->token == '[') {
@@ -1854,7 +1854,7 @@ static void expr_table(LexState *ls, ExpDesc *e)
         fs->freereg = freg;
         if (!lex_opt(ls, ',') && !lex_opt(ls, ';')) break;
     }
-    lex_match(ls, '}', '{', line);
+    lex_match(ls, ']', '[', line);
     if (vcall) {
         BCInsLine *ilp = &fs->bcbase[fs->pc - 1];
         ExpDesc en;
@@ -2005,7 +2005,7 @@ static void parse_args(LexState *ls, ExpDesc *e)
         }
         lex_match(ls, ')', '(', line);
     }
-    else if (ls->token == '{') {
+    else if (ls->token == '[') {
         expr_table(ls, &args);
     }
     else if (ls->token == TK_string) {
@@ -2109,7 +2109,7 @@ static void expr_simple(LexState *ls, ExpDesc *v)
         v->u.s.aux = base;
         break;
     }
-    case '{':  /* Table constructor. */
+    case '[':  /* Table constructor. */
         expr_table(ls, v);
         return;
     case TK_function:
