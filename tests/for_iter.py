@@ -1,5 +1,3 @@
-def foo():
-    for i in range(0, 10):
-        print(i)
-
-foo()
+days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+for day in days:
+    print(day)
