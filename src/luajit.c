@@ -304,7 +304,7 @@ static int loadjitmodule(lua_State *L)
     if (msg && !strncmp(msg, "module ", 7)) {
     err:
       l_message(progname,
-		"unknown luaJIT command or jit.* modules not installed");
+          "unknown luaJIT command or jit.* modules not installed");
       return 1;
     } else {
       return report(L, 1);
