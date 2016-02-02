@@ -78,7 +78,7 @@ typedef struct ExpDesc {
 #define expr_numberV(e)		numberVnum(expr_numtv((e)))
 
 /* Forward Declarations */
-static inc_index_to_match_python(LexState *ls, ExpDesc *key);
+static int inc_index_to_match_python(LexState *ls, ExpDesc *key);
 
 /* Initialize expression. */
 static LJ_AINLINE void expr_init(ExpDesc *e, ExpKind k, uint32_t info)
@@ -2865,7 +2865,7 @@ GCproto *lj_parse(LexState *ls)
 }
 
 /*                  Support for Python specific functions               */
-static inc_index_to_match_python(LexState *ls, ExpDesc *key)
+static int inc_index_to_match_python(LexState *ls, ExpDesc *key)
 {
     ExpDesc v2;
     v2.k = VKNUM;
