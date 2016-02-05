@@ -1,3 +1,9 @@
+Luajit For Python
+----------------------
+Am performing sacrilege by modifying Luajit's internals to experiment with Python. With this version of Luajit, am modifying the lexer and parser to support simple functions, while, if-else, lists etc.
+Am adding to the tests folder for things which are working.
+This project right now is just for fun. Let me know if you would like to collaborate.
+
 README for LuaJIT 2.0.3
 -----------------------
 
